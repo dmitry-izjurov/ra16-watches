@@ -1,0 +1,88 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+h5, p {
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  display: block;
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  color: blue;
+}
+
+a:focus {
+  color: red;
+  text-decoration: underline;
+}
+
+.task {
+  margin-top: 30px;
+  color: red;
+}
+
+.wrapper__form_watches {
+  margin-top: 30px;
+}
+
+.form_watches {
+  display: flex;
+  align-items: flex-end;
+}
+
+.label_watches {
+  margin-right: 20px;
+}
+
+.input_watches {
+  box-sizing: border-box;
+  margin-top: 7px;
+  width: 200px;
+  height: 30px;
+}
+
+.text-input {
+  display: block;
+}
+
+.button_watches {
+  height: 30px;
+}
+
+.wrapper__container-watches {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wrapper__container-watch:nth-child(n+2) {
+  margin-left: 20px;
+}
+
+.wrapper__container-watch {
+  display: flex;
+}
+
+.title-watch, .watch {
+  display: block;
+}
+
+.remove-watch {
+  margin-left: 10px;
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
