@@ -5,7 +5,7 @@ body {
   margin: 0;
 }
 
-h5, p {
+h5, p, h1 {
   margin: 0;
 }
 
@@ -84,5 +84,57 @@ a:focus {
   font-size: 18px;
   width: 30px;
   height: 30px;
+  cursor: pointer;
+}
+
+.wrapper_filecycle {
+  margin-top: 30px;
+}
+
+.header {
+  display: flex;
+}
+
+h1 {
+  margin-right: 30px;
+}
+
+.button_update {
+  cursor: pointer;
+}
+
+.box__cards {
+  display: flex;
+  margin-top: 30px;
+}
+
+.box__card {
+  position: relative;
+  margin: 10px;
+  width: 300px;
+  height: 100px;
+  border: 1px solid black;
+}
+
+.button_remove {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+}
+
+.form {
+  margin-top: 30px;
+}
+
+.textarea {
+  box-sizing: border-box;
+  padding: 10px;
+  width: 300px;
+  height: 100px;
+  resize: none;
+}
+
+.form__button {
   cursor: pointer;
 }

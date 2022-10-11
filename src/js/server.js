@@ -3,40 +3,21 @@ const port = 7070;
 const Koa = require('koa');
 const koaBody = require('koa-body');
 const cors = require('@koa/cors');
-const tickets = [];
-const ticketsFull = [];
+const cards = [];
 
 function addId(id) {
   return id + 1;
 }
 
-function getDate() {
-  let dateTransaction = new Date();
-  return `${dateTransaction.toLocaleString()}`;
-}
-
-class Ticket {
-  constructor(id, name, status, created) {
+class Card {
+  constructor(id, text) {
     this.id = id;
-    this.name = name;
-    this.status = status;
-    this.created = created;
+    this.text = text;
   }
 }
 
-class TicketFull extends Ticket {
-  constructor(id, name, status, created, description) {
-    super(id, name, status, created);
-    this.description = description;
-  }
-}
-
-tickets.push(new Ticket(1, 'Поменять краску в принтере', false, getDate()));
-ticketsFull.push(new TicketFull(1, 'Поменять краску в принтере', false, getDate(), 'Поменять краску в принтере LaserJet 1320'));
-tickets.push(new Ticket(2, 'Переустановить Windows', false, getDate()));
-ticketsFull.push(new TicketFull(2, 'Переустановить Windows', false, getDate(), 'Переустановить Windows 10'));
-tickets.push(new Ticket(3, 'Установить обновление', true, getDate()));
-ticketsFull.push(new TicketFull(3, 'Установить обновление', true, getDate(), 'Установить обновление KB5005565'));
+cards.push(new Card(1, 'Поменять краску в принтере'));
+cards.push(new Card(2, 'Переустановить Windows'));
 
 const app = new Koa();
 app.use(cors());
@@ -47,48 +28,36 @@ app.use(koaBody({
 }));
 
 app.use(async (ctx) => { 
-  const method  = ctx.request.querystring;
+  let method  = ctx.request.querystring;
   let id;
   if (method) {
     const num = Number(method.split('id=')[1]);
     if (num) id = num;
+  } else if (ctx.request.method === 'DELETE') {
+    method = 'DELETE';
   }
 
   switch (method) {
-    case 'method=allTicket':
-      ctx.response.body = tickets;
+    case 'method=allCards':
+      ctx.response.body = cards;
       return;
     
-    case `method=ticketById&id=${id}`:
-      if (Object.keys(ctx.request.body).length !== 0) {
-        const index = tickets.findIndex(a => a.id === Number(id));
-
-        tickets[index].name = ctx.request.body.text;
-        ticketsFull[index].name = ctx.request.body.text;
-        ticketsFull[index].description = ctx.request.body.textarea;
-      } 
-
-      ctx.response.body = ticketsFull[ticketsFull.findIndex(a => a.id === id)];
-      console.log(ctx.response.body);
-      return;
-    
-    case 'method=createTicket':
-      let idTicket = 0;
+    case 'method=createCard':
+      let idCard = ctx.request.body.id;
       let idArr = [];
-      tickets.forEach(a => idArr.push(a.id));
+      cards.forEach(a => idArr.push(a.id));
       if (idArr.length !== 0) {
-        idTicket = Math.max.apply(null, idArr);
+        idCard = Math.max.apply(null, idArr);
       }
-      tickets.push(new Ticket(addId(idTicket), ctx.request.body.text, false, getDate()));
-      ticketsFull.push(new TicketFull(addId(idTicket), ctx.request.body.text, true, getDate(), ctx.request.body.textarea));
-      ctx.response.body = tickets;
+      cards.push(new Card(addId(idCard), ctx.request.body.textarea));
+      ctx.response.body = cards;
       return;
 
-    case 'method=deleteTicket':
-      const index = tickets.findIndex(a => a.id === Number(ctx.request.body.id));
-      tickets.splice(index, 1);
-      ticketsFull.splice(index, 1);
-      ctx.response.body = tickets;
+    case 'DELETE':
+      const deleteId = ctx.request.url.substring(7);
+      const index = cards.findIndex(a => a.id === Number(deleteId));
+      cards.splice(index, 1);
+      ctx.response.body = cards;
       return;
 
     default:
